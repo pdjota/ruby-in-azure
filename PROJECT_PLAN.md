@@ -67,7 +67,24 @@ ruby_in_azure/
   - timestamps
   - Validations: unique product-store combination
 
-### 1.3 Authentication Setup
+### 1.3 GitHub Repository Setup & CI/CD
+- [ ] **GitHub CLI setup**
+  - Install and authenticate GitHub CLI
+  - Create GitHub repository
+  - Push local repository to GitHub
+  - Configure repository settings
+- [ ] **GitHub Actions CI/CD**
+  - Configure CI workflow for testing
+  - Set up test database in CI
+  - Configure Ruby version and dependencies
+  - Set up test reporting and coverage
+- [ ] **Repository configuration**
+  - Add repository description and topics
+  - Configure branch protection rules
+  - Set up issue and PR templates
+  - Configure repository secrets
+
+### 1.4 Authentication Setup
 - [ ] **User model and authentication**
   - User model with email and password
   - Rails 8 built-in authentication (has_secure_password)
@@ -81,7 +98,7 @@ ruby_in_azure/
   - Role-based access control (admin/user)
   - Protected routes and actions
 
-### 1.4 Controllers & Hotwire Views
+### 1.5 Controllers & Hotwire Views
 - [ ] **ProductsController**
   - CRUD operations with Turbo responses
   - Form validation with Stimulus
@@ -99,9 +116,9 @@ ruby_in_azure/
   - Error handling
   - Authentication helpers
 
-## Phase 1.5: GitHub Actions Pipeline & Staging Deployment
+## Phase 1.7: GitHub Actions Pipeline & Staging Deployment
 
-### 1.5.1 GitHub Actions Setup
+### 1.7.1 GitHub Actions Setup
 - [ ] **Create `.github/workflows/` directory**
 - [ ] **CI/CD Pipeline** (`.github/workflows/ci.yml`)
   - Trigger on push to main/develop branches
@@ -117,7 +134,7 @@ ruby_in_azure/
   - Health checks post-deployment
   - Terraform infrastructure validation
 
-### 1.5.2 Docker Configuration for CI/CD
+### 1.7.2 Docker Configuration for CI/CD
 - [ ] **Production Dockerfile**
   - Multi-stage build (build + runtime)
   - Ruby 3.4.2 base image
@@ -134,7 +151,7 @@ ruby_in_azure/
   - Security scanning
   - Integration with GitHub Actions
 
-### 1.5.3 Terraform Infrastructure for Staging
+### 1.7.3 Terraform Infrastructure for Staging
 - [ ] **Terraform Configuration** (`terraform/staging/`)
   - `main.tf` - Main infrastructure configuration
   - `variables.tf` - Input variables
@@ -155,7 +172,7 @@ ruby_in_azure/
   - Resource tagging strategy
   - Cost management and monitoring
 
-### 1.5.4 Staging Environment Setup
+### 1.7.4 Staging Environment Setup
 - [ ] **Azure Staging Resources Deployment**
   - Deploy infrastructure with Terraform
   - Configure environment variables
@@ -406,7 +423,25 @@ Inventory.first.product.name
 bundle exec rspec spec/models/
 ```
 
-#### **Phase 1.3 Testing (Authentication)**
+#### **Phase 1.3 Testing (GitHub Setup & CI/CD)**
+```bash
+# 1. Verify GitHub CLI
+gh --version
+gh auth status
+
+# 2. Test repository creation
+gh repo create ruby-in-azure --public --description "Rails 8 stock management app with PostgreSQL and Azure deployment"
+
+# 3. Test GitHub Actions workflow
+# Push to repository and check Actions tab
+git push origin main
+
+# 4. Verify CI/CD pipeline
+# Check GitHub Actions runs on push/PR
+# Verify test results and coverage reports
+```
+
+#### **Phase 1.4 Testing (Authentication)**
 ```bash
 # 1. Test user creation
 bundle exec rails console
@@ -421,7 +456,7 @@ user.authenticate("wrong")        # Should return false
 # Try accessing /products without login - should redirect to login
 ```
 
-#### **Phase 1.4 Testing (Controllers & Views)**
+#### **Phase 1.5 Testing (Controllers & Views)**
 ```bash
 # 1. Test CRUD operations
 bundle exec rails console
@@ -439,7 +474,7 @@ curl -X POST http://localhost:3000/products -d "product[name]=New Product&produc
 # Test real-time updates with Turbo Streams
 ```
 
-#### **Phase 1.5 Testing (GitHub Actions & Docker)**
+#### **Phase 1.7 Testing (GitHub Actions & Docker)**
 ```bash
 # 1. Test Docker build
 docker build -t ruby-in-azure .
@@ -467,7 +502,7 @@ act -j ci  # If using act tool
 # Test on mobile devices
 ```
 
-#### **Phase 1.7 Testing (Data Generation)**
+#### **Phase 1.8 Testing (Data Generation)**
 ```bash
 # 1. Test seed data
 bundle exec rails db:seed
@@ -548,19 +583,21 @@ bundle exec rails test
 
 ## Estimated Timeline
 - **Phase 1**: 3-4 days (Rails setup + Hotwire + Data generation)
-- **Phase 1.5**: 2-3 days (GitHub Actions + Docker + Staging deployment)
+- **Phase 1.3**: 1 day (GitHub repository setup + CI/CD)
+- **Phase 1.7**: 2-3 days (GitHub Actions + Docker + Staging deployment)
 - **Phase 2**: 3-4 days (Comprehensive testing + TDD + CI/CD integration)
 - **Phase 3**: 1-2 days (Production Docker optimization + testing)
 - **Phase 4**: 2-3 days (Azure infrastructure + testing)
 - **Phase 5**: 1-2 days (Production deployment + testing)
 
-**Total**: 12-18 days (extended due to comprehensive testing and pipeline requirements)
+**Total**: 13-19 days (extended due to comprehensive testing and pipeline requirements)
 
 ## Prerequisites
 - Ruby 3.4.2 (via asdf)
 - Docker and Docker Compose
 - Azure CLI
 - Terraform
+- GitHub CLI
 - GitHub account
 - Azure subscription
 
