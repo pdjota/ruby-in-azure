@@ -10,9 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_02_162654) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_02_162724) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "inventories", force: :cascade do |t|
+    t.bigint "product_id", null: false
+    t.bigint "store_id", null: false
+    t.integer "available_quantity", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["product_id", "store_id"], name: "index_inventories_on_product_id_and_store_id", unique: true
+    t.index ["product_id"], name: "index_inventories_on_product_id"
+    t.index ["store_id"], name: "index_inventories_on_store_id"
+  end
 
   create_table "products", force: :cascade do |t|
     t.string "name"
@@ -29,4 +40,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_02_162654) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  add_foreign_key "inventories", "products"
+  add_foreign_key "inventories", "stores"
 end

@@ -372,11 +372,11 @@ ruby --version  # Should show 3.4.2
 gem env
 
 # 3. Create and migrate databases
-rails db:create
-rails db:migrate
+bundle exec rails db:create
+bundle exec rails db:migrate
 
 # 4. Start development server
-rails server
+bundle exec rails server
 
 # 5. Test server response
 curl -I http://localhost:3000  # Should return HTTP 200 OK
@@ -388,7 +388,7 @@ curl -I http://localhost:3000  # Should return HTTP 200 OK
 #### **Phase 1.2 Testing (Database Models)**
 ```bash
 # 1. Test model creation
-rails console
+bundle exec rails console
 Product.create!(name: "Test Product", barcode: "123456789")
 Store.create!(name: "Test Store", address: "123 Main St")
 Inventory.create!(product: Product.first, store: Store.first, available_quantity: 10)
@@ -401,12 +401,15 @@ Product.create(name: "Test", barcode: "")       # Should fail validation
 Product.first.stores
 Store.first.products
 Inventory.first.product.name
+
+# 4. Run model tests
+bundle exec rspec spec/models/
 ```
 
 #### **Phase 1.3 Testing (Authentication)**
 ```bash
 # 1. Test user creation
-rails console
+bundle exec rails console
 User.create!(email: "test@example.com", password: "password123")
 
 # 2. Test authentication
@@ -421,7 +424,7 @@ user.authenticate("wrong")        # Should return false
 #### **Phase 1.4 Testing (Controllers & Views)**
 ```bash
 # 1. Test CRUD operations
-rails console
+bundle exec rails console
 # Create test data
 product = Product.create!(name: "Test Product", barcode: "123456789")
 store = Store.create!(name: "Test Store", address: "123 Main St")
@@ -467,45 +470,45 @@ act -j ci  # If using act tool
 #### **Phase 1.7 Testing (Data Generation)**
 ```bash
 # 1. Test seed data
-rails db:seed
-rails console
+bundle exec rails db:seed
+bundle exec rails console
 User.count        # Should be 1 (admin user)
 Product.count     # Should be 100
 Store.count       # Should be 10
 Inventory.count   # Should be 1000
 
 # 2. Test sample data generator
-rails sample_data:generate
+bundle exec rails sample_data:generate
 # Verify data was created correctly
 ```
 
 #### **General Testing Commands**
 ```bash
 # Run all tests
-rspec
+bundle exec rspec
 
 # Run specific test types
-rspec spec/models/          # Model tests
-rspec spec/controllers/     # Controller tests
-rspec spec/requests/        # API tests
-rspec spec/system/          # System tests
+bundle exec rspec spec/models/          # Model tests
+bundle exec rspec spec/controllers/     # Controller tests
+bundle exec rspec spec/requests/        # API tests
+bundle exec rspec spec/system/          # System tests
 
 # Run with coverage
-COVERAGE=true rspec
+COVERAGE=true bundle exec rspec
 
 # Check code quality
-rubocop
-brakeman
+bundle exec rubocop
+bundle exec brakeman
 
 # Test database
-rails db:test:prepare
-rails test
+bundle exec rails db:test:prepare
+bundle exec rails test
 ```
 
 ### Testing (MANDATORY - No deployment without passing tests)
-1. Run `rspec` for complete test suite
-2. Run `rspec spec/requests/` for API tests
-3. Run `rspec spec/system/` for end-to-end tests
+1. Run `bundle exec rspec` for complete test suite
+2. Run `bundle exec rspec spec/requests/` for API tests
+3. Run `bundle exec rspec spec/system/` for end-to-end tests
 4. GitHub Actions runs on every push/PR
 5. **Merge blocked if any test fails**
 6. Code coverage reports generated (minimum 90%)
