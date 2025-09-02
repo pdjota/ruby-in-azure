@@ -361,6 +361,147 @@ ruby_in_azure/
 5. Login with seeded admin account
 6. Database accessible at `localhost:5432`
 
+### Application Testing Guide
+
+#### **Phase 1.1 Testing (Rails Setup)**
+```bash
+# 1. Verify Ruby version
+ruby --version  # Should show 3.4.2
+
+# 2. Check gem environment
+gem env
+
+# 3. Create and migrate databases
+rails db:create
+rails db:migrate
+
+# 4. Start development server
+rails server
+
+# 5. Test server response
+curl -I http://localhost:3000  # Should return HTTP 200 OK
+
+# 6. Test in browser
+# Open http://localhost:3000 - should show Rails welcome page
+```
+
+#### **Phase 1.2 Testing (Database Models)**
+```bash
+# 1. Test model creation
+rails console
+Product.create!(name: "Test Product", barcode: "123456789")
+Store.create!(name: "Test Store", address: "123 Main St")
+Inventory.create!(product: Product.first, store: Store.first, available_quantity: 10)
+
+# 2. Test validations
+Product.create(name: "", barcode: "123456789")  # Should fail validation
+Product.create(name: "Test", barcode: "")       # Should fail validation
+
+# 3. Test associations
+Product.first.stores
+Store.first.products
+Inventory.first.product.name
+```
+
+#### **Phase 1.3 Testing (Authentication)**
+```bash
+# 1. Test user creation
+rails console
+User.create!(email: "test@example.com", password: "password123")
+
+# 2. Test authentication
+user = User.find_by(email: "test@example.com")
+user.authenticate("password123")  # Should return user object
+user.authenticate("wrong")        # Should return false
+
+# 3. Test protected routes
+# Try accessing /products without login - should redirect to login
+```
+
+#### **Phase 1.4 Testing (Controllers & Views)**
+```bash
+# 1. Test CRUD operations
+rails console
+# Create test data
+product = Product.create!(name: "Test Product", barcode: "123456789")
+store = Store.create!(name: "Test Store", address: "123 Main St")
+
+# 2. Test API endpoints
+curl -X GET http://localhost:3000/products
+curl -X POST http://localhost:3000/products -d "product[name]=New Product&product[barcode]=987654321"
+
+# 3. Test Hotwire functionality
+# Navigate to /products in browser
+# Test form submissions with Turbo
+# Test real-time updates with Turbo Streams
+```
+
+#### **Phase 1.5 Testing (GitHub Actions & Docker)**
+```bash
+# 1. Test Docker build
+docker build -t ruby-in-azure .
+
+# 2. Test Docker run
+docker run -p 3000:3000 ruby-in-azure
+
+# 3. Test GitHub Actions locally
+act -j ci  # If using act tool
+```
+
+#### **Phase 1.6 Testing (Frontend with Hotwire)**
+```bash
+# 1. Test Turbo functionality
+# Navigate between pages - should be SPA-like
+# Check browser network tab - should see Turbo requests
+
+# 2. Test Stimulus controllers
+# Open browser dev tools
+# Check for Stimulus controller registrations
+# Test form validations and dynamic behavior
+
+# 3. Test responsive design
+# Resize browser window
+# Test on mobile devices
+```
+
+#### **Phase 1.7 Testing (Data Generation)**
+```bash
+# 1. Test seed data
+rails db:seed
+rails console
+User.count        # Should be 1 (admin user)
+Product.count     # Should be 100
+Store.count       # Should be 10
+Inventory.count   # Should be 1000
+
+# 2. Test sample data generator
+rails sample_data:generate
+# Verify data was created correctly
+```
+
+#### **General Testing Commands**
+```bash
+# Run all tests
+rspec
+
+# Run specific test types
+rspec spec/models/          # Model tests
+rspec spec/controllers/     # Controller tests
+rspec spec/requests/        # API tests
+rspec spec/system/          # System tests
+
+# Run with coverage
+COVERAGE=true rspec
+
+# Check code quality
+rubocop
+brakeman
+
+# Test database
+rails db:test:prepare
+rails test
+```
+
 ### Testing (MANDATORY - No deployment without passing tests)
 1. Run `rspec` for complete test suite
 2. Run `rspec spec/requests/` for API tests
