@@ -93,10 +93,19 @@ ruby_in_azure/
 - [ ] **Authentication controllers**
   - SessionsController (login/logout)
   - UsersController (registration)
+- [ ] **Authentication views**
+  - Sessions#new (login form)
+  - Users#new (registration form)
+  - Login/logout navigation
 - [ ] **Authorization**
   - Before_action filters for authentication
   - Role-based access control (admin/user)
   - Protected routes and actions
+- [ ] **Admin user setup**
+  - Create admin user via Rails console
+  - Test admin authentication flow
+  - Verify admin user can access protected routes
+  - Document admin user credentials for testing
 
 ### 1.5 Controllers & Hotwire Views
 - [ ] **ProductsController**
@@ -201,10 +210,14 @@ ruby_in_azure/
 
 ### 1.7 Data Generation Scripts
 - [ ] **Seed data script** (`db/seeds.rb`)
-  - Generate admin user account
+  - Generate admin user account (admin@example.com / admin123456)
   - Generate 100 products with realistic names and barcodes
   - Generate 10 stores with addresses and contact info
   - Generate 1,000 inventory records with random available_quantity
+- [ ] **Admin user setup**
+  - Create admin user via Rails console for immediate testing
+  - Document admin credentials for development/testing
+  - Verify admin user can access all protected routes
 - [ ] **Sample data generator** (`lib/tasks/sample_data.rake`)
   - Rake task for generating test data
   - Configurable quantities (products, stores, inventory)
@@ -242,6 +255,13 @@ ruby_in_azure/
   - InventoriesController CRUD operations (authenticated)
   - Error handling and edge cases
   - Authentication redirects
+- [ ] **Authentication tests**
+  - Admin user creation and authentication
+  - Session management and persistence
+  - Protected route access control
+  - Login/logout functionality
+  - Password validation and security
+  - Authentication helper methods
 - [ ] **API tests**
   - JSON API endpoints testing
   - Request/response format validation
@@ -443,17 +463,39 @@ git push origin main
 
 #### **Phase 1.4 Testing (Authentication)**
 ```bash
-# 1. Test user creation
+# 1. Test authentication views
+# Navigate to http://localhost:3000/login
+# Verify login form is displayed correctly
+# Navigate to http://localhost:3000/signup
+# Verify registration form is displayed correctly
+
+# 2. Create admin user via console
 bundle exec rails console
+admin_user = User.create!(
+  email: "admin@example.com", 
+  password: "admin123456"
+)
+puts "Admin user created: #{admin_user.email}"
+
+# 3. Test user creation
 User.create!(email: "test@example.com", password: "password123")
 
-# 2. Test authentication
+# 4. Test authentication
 user = User.find_by(email: "test@example.com")
 user.authenticate("password123")  # Should return user object
 user.authenticate("wrong")        # Should return false
 
-# 3. Test protected routes
+# 5. Test admin authentication
+admin = User.find_by(email: "admin@example.com")
+admin.authenticate("admin123456")  # Should return admin user object
+
+# 6. Test protected routes
 # Try accessing /products without login - should redirect to login
+# Login with admin credentials via browser and verify access to protected routes
+
+# 7. Test session management
+# Login via browser, verify session persistence
+# Logout and verify session is cleared
 ```
 
 #### **Phase 1.5 Testing (Controllers & Views)**
@@ -600,6 +642,27 @@ bundle exec rails test
 - GitHub CLI
 - GitHub account
 - Azure subscription
+
+## Immediate Next Steps (Authentication Testing)
+1. **Implement authentication views**
+   - Create Sessions#new view (login form)
+   - Create Users#new view (registration form)
+   - Add navigation with login/logout links
+2. **Create admin user via Rails console**
+   ```bash
+   bundle exec rails console
+   User.create!(email: "admin@example.com", password: "admin123456")
+   ```
+3. **Test authentication flow**
+   - Login with admin credentials via browser
+   - Verify access to protected routes
+   - Test session management
+4. **Run authentication tests**
+   ```bash
+   bundle exec rspec spec/requests/sessions_spec.rb
+   bundle exec rspec spec/requests/users_spec.rb
+   ```
+5. **Verify all tests pass before proceeding**
 
 ## Next Steps
 1. Confirm plan approval

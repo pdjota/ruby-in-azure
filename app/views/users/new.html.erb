@@ -1,2 +1,40 @@
-<h1>Users#new</h1>
-<p>Find me in app/views/users/new.html.erb</p>
+<div class="auth-container">
+  <div class="auth-form">
+    <h1>Sign Up</h1>
+    
+    <%= form_with model: @user, url: signup_path, local: true, class: "auth-form-content" do |form| %>
+      <% if @user&.errors&.any? %>
+        <div class="alert alert-danger">
+          <ul class="error-list">
+            <% @user.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+      
+      <div class="form-group">
+        <%= form.label :email, "Email", class: "form-label" %>
+        <%= form.email_field :email, class: "form-control", required: true, autofocus: true %>
+      </div>
+      
+      <div class="form-group">
+        <%= form.label :password, "Password", class: "form-label" %>
+        <%= form.password_field :password, class: "form-control", required: true %>
+      </div>
+      
+      <div class="form-group">
+        <%= form.label :password_confirmation, "Confirm Password", class: "form-label" %>
+        <%= form.password_field :password_confirmation, class: "form-control", required: true %>
+      </div>
+      
+      <div class="form-actions">
+        <%= form.submit "Sign Up", class: "btn btn-primary" %>
+      </div>
+    <% end %>
+    
+    <div class="auth-links">
+      <p>Already have an account? <%= link_to "Login", login_path %></p>
+    </div>
+  </div>
+</div>

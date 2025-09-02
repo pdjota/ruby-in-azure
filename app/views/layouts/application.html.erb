@@ -23,6 +23,27 @@
   </head>
 
   <body>
+    <nav class="navbar">
+      <div class="navbar-content">
+        <%= link_to "Ruby In Azure", root_path, class: "navbar-brand" %>
+        <div class="navbar-links">
+          <% if logged_in? %>
+            <span>Welcome, <%= current_user.email %></span>
+            <%= link_to "Logout", logout_path, method: :delete %>
+          <% else %>
+            <%= link_to "Login", login_path %>
+            <%= link_to "Sign Up", signup_path %>
+          <% end %>
+        </div>
+      </div>
+    </nav>
+    
+    <% if notice %>
+      <div class="alert alert-success" style="background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; padding: 0.75rem; margin: 1rem; border-radius: 4px;">
+        <%= notice %>
+      </div>
+    <% end %>
+    
     <%= yield %>
   </body>
 </html>
