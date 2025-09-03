@@ -97,6 +97,11 @@ ruby_in_azure/
   - Sessions#new (login form)
   - Users#new (registration form)
   - Login/logout navigation
+- [ ] **Welcome page**
+  - WelcomeController with index action
+  - Personalized greeting for logged-in users
+  - Login/signup links for anonymous users
+  - Root route pointing to welcome page
 - [ ] **Authorization**
   - Before_action filters for authentication
   - Role-based access control (admin/user)
