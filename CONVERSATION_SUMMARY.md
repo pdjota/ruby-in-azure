@@ -46,11 +46,22 @@
 ### Phase 1.4: Authentication Setup ✅
 - User model with has_secure_password
 - SessionsController for login/logout
-- UsersController for registration
+- UsersController (cleaned up - no signup functionality)
 - ApplicationController with authentication helpers
 - Protected routes with before_action filters
-- Comprehensive test coverage (39 examples, 0 failures)
-- Authentication routes: /login, /logout, /signup
+- WelcomeController with personalized greeting
+- Welcome page with dynamic content based on auth status
+- Comprehensive test coverage (42 examples, 0 failures)
+- Authentication routes: /login, /logout (signup removed)
+
+### Phase 1.4.1: Welcome Page & Signup Removal ✅
+- WelcomeController with personalized greeting functionality
+- Dynamic welcome page content based on authentication status
+- Removed all signup functionality (routes, views, controller actions)
+- Updated navigation to show only login option for anonymous users
+- Comprehensive test coverage for welcome page (8 new test examples)
+- Updated PROJECT_PLAN.md section 1.4 to include welcome page requirements
+- All tests passing (42 examples, 0 failures)
 
 ## Key Technical Decisions
 - **Testing Strategy**: TDD approach with no step proceeding without passing tests
@@ -62,9 +73,10 @@
 
 ## Current Status
 - **Repository**: https://github.com/pdjota/ruby-in-azure
-- **All Tests Passing**: 39 examples, 0 failures
+- **All Tests Passing**: 42 examples, 0 failures
 - **CI/CD Pipeline**: Fully functional with all jobs passing
-- **Authentication System**: Complete and tested
+- **Authentication System**: Complete and tested (login only, no signup)
+- **Welcome Page**: Personalized greeting for logged-in users
 - **Next Phase**: 1.5 - Controllers & Hotwire Views
 
 ## Important Commands Used
@@ -94,12 +106,13 @@ gh repo view --web
 - **CI Integration**: Automated testing on every push
 
 ## Authentication Features
-- User registration with email/password
-- Login/logout functionality
+- Login/logout functionality (signup removed)
 - Session-based authentication
 - Protected routes with before_action filters
 - Password encryption with bcrypt
 - Form validation and error handling
+- User creation via Rails console/seeds only
+- Personalized welcome page for authenticated users
 
 ## Project Structure
 ```
@@ -108,16 +121,19 @@ gh repo view --web
 │   ├── controllers/
 │   │   ├── application_controller.rb (auth helpers)
 │   │   ├── sessions_controller.rb (login/logout)
-│   │   └── users_controller.rb (registration)
+│   │   ├── users_controller.rb (cleaned up)
+│   │   └── welcome_controller.rb (welcome page)
 │   ├── models/
 │   │   ├── product.rb
 │   │   ├── store.rb
 │   │   ├── inventory.rb
 │   │   └── user.rb
 │   └── views/
+│       ├── welcome/ (welcome page views)
+│       └── sessions/ (login views)
 ├── spec/
 │   ├── models/ (comprehensive model tests)
-│   ├── requests/ (controller tests)
+│   ├── requests/ (controller tests including welcome)
 │   └── factories/ (test data generation)
 ├── .github/workflows/ci.yml (CI/CD pipeline)
 ├── PROJECT_PLAN.md (detailed project plan)
@@ -138,3 +154,6 @@ The project is ready for Phase 1.5: Controllers & Hotwire Views, which will incl
 - GitHub Actions CI/CD setup
 - TDD approach ensuring quality at each step
 - Modern Rails practices with Hotwire
+- Welcome page implementation with personalized user experience
+- Simplified authentication flow (login-only, no signup)
+- Dynamic view content based on authentication status
